@@ -1,0 +1,62 @@
+description = 'spring-securing-web'
+group 'com.jiudaotech'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'war'
+
+sourceCompatibility = 1.7
+
+buildscript {
+    repositories {
+        jcenter()
+        // enable this to use snapshot versions of Gretty:
+        // maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local' }
+    }
+    dependencies {
+        classpath 'org.akhikhl.gretty:gretty:+'
+    }
+}
+
+repositories {
+    jcenter()
+    // enable this to use snapshot versions of Gretty:
+    // maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local' }
+}
+
+apply plugin: 'org.akhikhl.gretty'
+
+configurations.all {
+    exclude group: "log4j", module: "log4j"
+    exclude group: "org.slf4j", module: "slf4j-log4j12"
+    exclude group: "commons-logging", module: "commons-logging"
+}
+dependencies {
+    compile fileTree(dir: "dependency", include: "*.jar")
+    //compile files('dependency/ojdbc6.jar')
+    //Logback
+    compile "ch.qos.logback:logback-classic:$logback",
+            "org.slf4j:slf4j-api:$slf4j",
+            "org.slf4j:jul-to-slf4j:$slf4j",
+            "org.slf4j:jcl-over-slf4j:$slf4j",
+            "ch.qos.logback:logback-classic:$logback",
+            "org.apache.commons:commons-lang3:$commonLang",
+            "org.springframework:spring-core:$spring",
+            "org.springframework:spring-web:$spring",
+            "org.springframework:spring-webmvc:$spring",
+            "org.springframework.security:spring-security-web:$springsecurity",
+            "org.springframework.security:spring-security-config:$springsecurity",
+            "org.springframework:spring-jdbc:$spring",
+            "org.springframework:spring-context:$spring",
+            "mysql:mysql-connector-java:$mysql",
+            "jstl:jstl:$jstlib",
+            "com.alibaba:fastjson:$fastjson"
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+/**
+ * 配置项目服务端口，默认8080
+ */
+gretty {
+    port  = 8080
+}
